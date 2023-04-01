@@ -117,18 +117,19 @@ const callSendAPI = (sender_psid, response) => {
 const profile = (req, res) => {
   let request_body = {
     get_started: { payload: "GET_STARTED" },
-    whitelisted_domains: "https://chatbot-test-oltp.onrender.com",
+    whitelisted_domains: ["https://chatbot-test-oltp.onrender.com"],
   };
 
   // Send the HTTP request to the Messenger Platform
   request(
     {
       uri: `https://graph.facebook.com/v16.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      qs: { access_token: PAGE_ACCESS_TOKEN },
       method: "POST",
       json: request_body,
     },
     (err, res, body) => {
+      console.log(body);
       if (!err) {
         console.log("Profile successfully set!");
       } else {

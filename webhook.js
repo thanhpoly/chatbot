@@ -116,7 +116,7 @@ const callSendAPI = (sender_psid, response) => {
 
 const profile = (req, res) => {
   let request_body = {
-    get_started: "GET_STARTED",
+    get_started: { payload: "GET_STARTED" },
     whitelisted_domains: "https://chatbot-test-oltp.onrender.com",
   };
 

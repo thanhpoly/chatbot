@@ -71,16 +71,12 @@ const handleMessage = (sender_psid, received_message) => {
 const handlePostback = (sender_psid, received_postback) => {
   let response;
 
-  // Checks if the message contains text
-  if (received_message.text) {
-    // Creates the payload for a basic text message, which
-    // will be added to the body of our request to the Send API
+  let payload = received_postback.payload;
+
+  if (payload === "GET_STARTED") {
     response = {
-      text: `You sent the message: "${received_message.text}". Now send me an attachment!`,
+      text: "Welcome to the Chatbot Test! What is your name?",
     };
-  } else if (received_message.attachments) {
-    // Gets the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
   }
 
   // Sends the response message

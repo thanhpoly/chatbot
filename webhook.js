@@ -150,14 +150,16 @@ const getUserProfile = async (sender_psid) => {
         console.log(response);
 
         username = `${response.first_name} ${response.last_name}`;
-        console.log("username", username);
+        console.log("username111111111", username);
       } else {
         console.error("Unable to send message:" + err);
       }
     }
   );
 
-  return username;
+  const aaa = username;
+  console.log("aaaaaa", aaaa);
+  return aaa;
 };
 
 module.exports = {

@@ -142,33 +142,27 @@ const profile = (req, res) => {
   );
 };
 
-const getUserProfile = async (sender_psid) => {
-  let username = "";
-  const callAPi = () => {
-    return new Promise((resolve, reject) => {
-      request(
-        {
-          uri: `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`,
-          qs: { access_token: PAGE_ACCESS_TOKEN },
-          method: "GET",
-        },
-        (err, res, body) => {
-          if (!err) {
-            const response = JSON.parse(res);
-            console.log(response);
+const getUserProfile = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    request(
+      {
+        uri: `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`,
+        qs: { access_token: PAGE_ACCESS_TOKEN },
+        method: "GET",
+      },
+      (err, res, body) => {
+        if (!err) {
+          body = JSON.parse(body);
 
-            username = `${response.first_name} ${response.last_name}`;
-            console.log("username111111111", username);
-            resolve();
-          } else {
-            console.error("Unable to send message:" + err);
-          }
+          const username = `${response.first_name} ${response.last_name}`;
+          console.log("username111111111", username);
+          resolve();
+        } else {
+          console.error("Unable to send message:" + err);
         }
-      );
-    });
-  };
-  await callAPi();
-  return username;
+      }
+    );
+  });
 };
 
 const handleGetStarted = (sender_psid) => {

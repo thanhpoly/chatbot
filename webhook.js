@@ -145,12 +145,12 @@ const getUserProfile = async (sender_psid) => {
       method: "GET",
     },
     (err, res, body) => {
-      console.log(body);
-      console.log(res);
       if (!err) {
         response = JSON.parse(res);
+        console.log(response);
 
-        username = `${response.first_name} ${response.last_name}}`;
+        username = `${response.first_name} ${response.last_name}`;
+        console.log("username", username);
       } else {
         console.error("Unable to send message:" + err);
       }

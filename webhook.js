@@ -157,7 +157,7 @@ const getUserProfile = async (sender_psid) => {
             const response = JSON.parse(res);
             console.log(response);
 
-            const username = `${response.first_name} ${response.last_name}`;
+            username = `${response.first_name} ${response.last_name}`;
             console.log("username111111111", username);
             resolve();
           } else {

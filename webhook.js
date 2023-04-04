@@ -73,12 +73,17 @@ const handlePostback = async (sender_psid, received_postback) => {
 
   let payload = received_postback.payload;
 
-  if (payload === "GET_STARTED") {
-    let username = await getUserProfile(sender_psid);
-    console.log("username", username);
-    response = {
-      text: `Welcome to the Chatbot Test! Hello ${username}!`,
-    };
+  switch (payload) {
+    case "GET_STARTED":
+      await handleGetStarted(sender_psid);
+      response = {
+        text: `Welcome to my Messenger bot!`,
+      };
+      break;
+    default:
+      response = {
+        text: `You sent the message: "${received_message.text}". Now send me an image!`,
+      };
   }
 
   // Sends the response message
@@ -160,6 +165,18 @@ const getUserProfile = async (sender_psid) => {
   const aaa = username;
   console.log("aaaaaa", aaaa);
   return aaa;
+};
+
+const handleGetStarted = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let res = { text: "Welcome to my Messenger bot!" };
+      await callSendAPI(sender_psid, res);
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 module.exports = {

@@ -155,8 +155,8 @@ const getUserProfile = (sender_psid) => {
           body = JSON.parse(body);
 
           const username = `${body.first_name} ${body.last_name}`;
-          console.log("username111111111", username);
-          resolve();
+          // console.log("username111111111", username);
+          resolve(username);
         } else {
           console.error("Unable to send message:" + err);
         }
@@ -169,6 +169,7 @@ const handleGetStarted = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       let username = await getUserProfile(sender_psid);
+      console.log("username", username);
       let res = { text: `Welcome to my Messenger bot! Hello ${username}` };
       await callSendAPI(sender_psid, res);
       resolve();

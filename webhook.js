@@ -170,7 +170,8 @@ const getUserProfile = async (sender_psid) => {
 const handleGetStarted = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let res = { text: "Welcome to my Messenger bot!" };
+      let username = await getUserProfile(sender_psid);
+      let res = { text: `Welcome to my Messenger bot! Hello ${username}` };
       await callSendAPI(sender_psid, res);
       resolve();
     } catch (error) {

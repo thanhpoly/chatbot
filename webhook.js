@@ -68,14 +68,15 @@ const handleMessage = (sender_psid, received_message) => {
 };
 
 // Handles messaging_postbacks events
-const handlePostback = (sender_psid, received_postback) => {
+const handlePostback = async (sender_psid, received_postback) => {
   let response;
 
   let payload = received_postback.payload;
 
   if (payload === "GET_STARTED") {
+    let username = await getUserProfile(sender_psid);
     response = {
-      text: "Welcome to the Chatbot Test! What is your name?",
+      text: `Welcome to the Chatbot Test! Hello ${username}!`,
     };
   }
 
@@ -133,6 +134,28 @@ const profile = (req, res) => {
       }
     }
   );
+};
+
+const getUserProfile = async (sender_psid) => {
+  let username = "";
+  await request(
+    {
+      uri: `https://graph.facebook.com/v16.0/${sender_psid}?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=${PAGE_ACCESS_TOKEN}`,
+      method: "GET",
+    },
+    (err, res, body) => {
+      if (!err) {
+        let response = JSON.parse(res);
+        username: `${response.first_name} ${response.last_name}}`;
+
+        console.log("Profile successfully set!");
+      } else {
+        console.error("Unable to send message:" + err);
+      }
+    }
+  );
+
+  return username;
 };
 
 module.exports = {

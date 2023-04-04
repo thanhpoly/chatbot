@@ -154,10 +154,10 @@ const getUserProfile = async (sender_psid) => {
         },
         (err, res, body) => {
           if (!err) {
-            response = JSON.parse(res);
+            const response = JSON.parse(res);
             console.log(response);
 
-            username = `${response.first_name} ${response.last_name}`;
+            const username = `${response.first_name} ${response.last_name}`;
             console.log("username111111111", username);
             resolve();
           } else {

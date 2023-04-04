@@ -75,6 +75,7 @@ const handlePostback = async (sender_psid, received_postback) => {
 
   if (payload === "GET_STARTED") {
     let username = await getUserProfile(sender_psid);
+    console.log("username", username);
     response = {
       text: `Welcome to the Chatbot Test! Hello ${username}!`,
     };

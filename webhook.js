@@ -154,7 +154,7 @@ const getUserProfile = (sender_psid) => {
         if (!err) {
           body = JSON.parse(body);
 
-          const username = `${response.first_name} ${response.last_name}`;
+          const username = `${body.first_name} ${body.last_name}`;
           console.log("username111111111", username);
           resolve();
         } else {

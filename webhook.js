@@ -147,6 +147,7 @@ const getUserProfile = async (sender_psid) => {
   await request(
     {
       uri: `https://graph.facebook.com/v16.0/${sender_psid}?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=${PAGE_ACCESS_TOKEN}`,
+      qs: { access_token: PAGE_ACCESS_TOKEN },
       method: "GET",
     },
     (err, res, body) => {

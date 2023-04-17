@@ -1,5 +1,5 @@
 const express = require("express");
-const { postWebhook, getWebhook, profile } = require("./webhook");
+const { postWebhook, getWebhook, profile, getMessage } = require("./webhook");
 
 const router = express.Router();
 router.get("/", (req, res) => {
@@ -8,5 +8,6 @@ router.get("/", (req, res) => {
 router.get("/webhook", getWebhook);
 router.post("/webhook", postWebhook);
 router.post("/profile", profile);
+router.post("/message", getMessage);
 
 module.exports = router;

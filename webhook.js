@@ -179,6 +179,27 @@ const handleGetStarted = (sender_psid) => {
   });
 };
 
+const getMessage = () => {
+  return new Promise((resolve, reject) => {
+    request(
+      {
+        uri: `https://graph.facebook.com/v16.0/109138208808915/conversations?platform=messenger?access_token=${PAGE_ACCESS_TOKEN}`,
+        qs: { access_token: PAGE_ACCESS_TOKEN },
+        method: "GET",
+      },
+      (err, res, body) => {
+        if (!err) {
+          body = JSON.parse(body);
+          console.log("body", body);
+          resolve(body);
+        } else {
+          console.error("Unable to send message:" + err);
+        }
+      }
+    );
+  });
+};
+
 module.exports = {
   postWebhook,
   getWebhook,
@@ -186,4 +207,5 @@ module.exports = {
   handlePostback,
   callSendAPI,
   profile,
+  getMessage,
 };

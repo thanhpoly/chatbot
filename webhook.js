@@ -209,6 +209,7 @@ const handleGetStarted = (sender_psid) => {
       let res = { text: `Welcome to my Messenger bot! Hello ${username}` };
 
       let res2 = sendGetStartedTemplate();
+      console.log("res2", res2);
 
       // sent text message
       await callSendAPI(sender_psid, res);

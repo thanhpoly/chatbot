@@ -61,6 +61,42 @@ const handleMessage = (sender_psid, received_message) => {
     response = {
       text: `You sent the message: "${received_message.text}". Now send me an image!`,
     };
+  } else if (received_message.attachments) {
+    let attachment_url = received_message.attachments[0].payload.url;
+    response = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+            {
+              title: "Welcome!",
+              image_url: "https://petersfancybrownhats.com/company_image.png",
+              subtitle: "We have the right hat for everyone.",
+              default_action: {
+                type: "web_url",
+                url: "https://petersfancybrownhats.com/view?item=103",
+                messenger_extensions: false,
+                webview_height_ratio: "tall",
+                fallback_url: "https://petersfancybrownhats.com/",
+              },
+              buttons: [
+                {
+                  type: "web_url",
+                  url: "https://petersfancybrownhats.com",
+                  title: "View Website",
+                },
+                {
+                  type: "postback",
+                  title: "Start Chatting",
+                  payload: "DEVELOPER_DEFINED_PAYLOAD",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    };
   }
 
   // Sends the response message
@@ -171,12 +207,58 @@ const handleGetStarted = (sender_psid) => {
       let username = await getUserProfile(sender_psid);
       console.log("username", username);
       let res = { text: `Welcome to my Messenger bot! Hello ${username}` };
+
+      let res2 = sendGetStartedTemplate();
+
+      // sent text message
       await callSendAPI(sender_psid, res);
+
+      await callSendAPI(sender_psid, res2);
+
       resolve();
     } catch (error) {
       reject(error);
     }
   });
+};
+
+const sendGetStartedTemplate = () => {
+  let res = {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "generic",
+        elements: [
+          {
+            title: "Welcome!",
+            image_url: "https://petersfancybrownhats.com/company_image.png",
+            subtitle: "We have the right hat for everyone.",
+            default_action: {
+              type: "web_url",
+              url: "https://petersfancybrownhats.com/view?item=103",
+              messenger_extensions: false,
+              webview_height_ratio: "tall",
+              fallback_url: "https://petersfancybrownhats.com/",
+            },
+            buttons: [
+              {
+                type: "web_url",
+                url: "https://petersfancybrownhats.com",
+                title: "View Website",
+              },
+              {
+                type: "postback",
+                title: "Start Chatting",
+                payload: "DEVELOPER_DEFINED_PAYLOAD",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  };
+
+  return res;
 };
 
 const getMessage = () => {
@@ -200,6 +282,55 @@ const getMessage = () => {
   });
 };
 
+const setupPersistentMenu = (req, res) => {
+  let request_body = {
+    persistent_menu: [
+      {
+        locale: "default",
+        composer_input_disabled: false,
+        call_to_actions: [
+          {
+            type: "postback",
+            title: "Talk to an agent",
+            payload: "CARE_HELP",
+          },
+          {
+            type: "postback",
+            title: "Outfit suggestions",
+            payload: "CURATION",
+          },
+          {
+            type: "web_url",
+            title: "Shop now",
+            url: "https://www.originalcoastclothing.com/",
+            webview_height_ratio: "full",
+          },
+        ],
+      },
+    ],
+  };
+
+  // Send the HTTP request to the Messenger Platform
+  request(
+    {
+      uri: `https://graph.facebook.com/v16.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
+      qs: { access_token: PAGE_ACCESS_TOKEN },
+      method: "POST",
+      json: request_body,
+    },
+    (err, res, body) => {
+      console.log(body);
+      if (!err) {
+        console.log("Persistent successfully set!");
+      } else {
+        console.error("Unable to send message:" + err);
+      }
+    }
+  );
+
+  res.status(200).send("ok");
+};
+
 module.exports = {
   postWebhook,
   getWebhook,
@@ -208,4 +339,5 @@ module.exports = {
   callSendAPI,
   profile,
   getMessage,
+  setupPersistentMenu,
 };

@@ -232,7 +232,6 @@ const sendGetStartedTemplate = () => {
         elements: [
           {
             title: "Welcome!",
-            image_url: "https://petersfancybrownhats.com/company_image.png",
             subtitle: "We have the right hat for everyone.",
             buttons: [
               {
